@@ -13,5 +13,4 @@ def login(request):
 
     This is the page that the user will see when they go to the Login URL or the root URL.
     """
-    # return render(request, 'Login/Login.html')
-    return HttpResponse("Hello, world. You're at the Login index.")
+    return render(request, 'Login/login.html')

@@ -15,13 +15,17 @@ services:
       - db
 
   db:
-    image: postgres:latest
+    image: postgres:16.0
+    volumes:
+      - pg_data:/var/lib/postgresql/data
     environment:
       POSTGRES_DB: scheduler_dev
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: admin
+    ports:
+      - "5432:5432"
 
   adminer:
     image: adminer
     ports:
-      - "8081:8080"
+      - "8080:8080"

@@ -9,7 +9,8 @@ services:
       - "8000:8000"
     volumes:
       - .:/app
-    entrypoint: ["/app/entrypoint.sh"]
+    # Uncomment the following lines to run the migrations before running the server
+    # entrypoint: ["/app/entrypoint.sh"]
     command: python manage.py runserver 0.0.0.0:8000
     depends_on:
       - db

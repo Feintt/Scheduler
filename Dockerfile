@@ -4,8 +4,13 @@ FROM python:3.11-bullseye
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-# Install netcat
-RUN apt-get update && apt-get install -y netcat && rm -rf /var/lib/apt/lists/*
+# Update the repository sources list and install needed dependencies
+RUN apt-get update && apt-get install -y \
+    netcat \
+    xmlsec1 \
+    libxml2-dev \
+    libxmlsec1-dev \
+    && rm -rf /var/lib/apt/lists/*
 
 # Set the working directory in the container
 WORKDIR /app

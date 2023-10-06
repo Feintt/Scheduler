@@ -10,8 +10,6 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os.path
-import saml2
-from saml2.config import Config as Saml2Config
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.

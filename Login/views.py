@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .forms import LoginForm
+from .auth_login import authenticate_people_soft
 
 
 # If the user goes to the root URL, redirect them to the Login page
@@ -17,8 +18,12 @@ def login_view(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
-            # Handle the login logic here
-            pass
+            userid = form.cleaned_data['email'].split('@')[0]
+            pwd = form.cleaned_data['password']
+            if authenticate_people_soft(userid, pwd):
+                message = 'Login successful!'
+            else:
+                message = 'Login failed!'
     else:
         form = LoginForm()
 

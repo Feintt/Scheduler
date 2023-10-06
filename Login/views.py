@@ -6,16 +6,11 @@ from .auth_login import authenticate_people_soft
 from django.db import DatabaseError
 
 
-# If the user goes to the root URL, redirect them to the Login page
-def redirect_login(request):
-    return redirect('/login/')
-
-
 def handle_people_soft_authentication(userid, pwd):
     """Handles authentication against PeopleSoft."""
     try:
         return authenticate_people_soft(userid, pwd)
-    except Exception as e:
+    except:
         # You can log the error here for debugging.
         return False
 
@@ -73,3 +68,7 @@ def logout_view(request):
         logout(request)
 
     return redirect('login')
+
+
+def redirect_login(request):
+    return redirect('/login/')

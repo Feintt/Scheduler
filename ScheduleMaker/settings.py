@@ -57,7 +57,10 @@ ROOT_URLCONF = 'ScheduleMaker.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'Login/templates']
+        'DIRS': [
+            BASE_DIR / 'Login/templates',
+            BASE_DIR / 'Dashboard/templates',
+        ]
         ,
         'APP_DIRS': True,
         'OPTIONS': {
@@ -130,7 +133,8 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'Login/static')
+    os.path.join(BASE_DIR, 'Login/static'),
+    os.path.join(BASE_DIR, 'Dashboard/static'),
 ]
 
 # Default primary key field type

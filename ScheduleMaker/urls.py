@@ -21,7 +21,4 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('Login.urls')),
     path('', include('Dashboard.urls')),
-
-    # Path for saml2
-    path('saml2/', include('djangosaml2.urls')),
 ]

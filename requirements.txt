@@ -4,3 +4,4 @@ sqlparse==0.4.4
 psycopg2-binary==2.9.8
 djangosaml2==1.7.0
 pysaml2~=7.4.2
+selenium==4.13.0

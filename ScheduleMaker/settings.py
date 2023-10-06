@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 import os.path
 import saml2
+from saml2.config import Config as Saml2Config
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -38,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'djangosaml2',
     'Login.apps.LoginConfig',
     'Dashboard.apps.DashboardConfig'
 ]
@@ -141,3 +143,14 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# SAML2 Settings
+
+LOGIN_URL = 'saml2_login'
+LOGOUT_URL = 'saml2_logout'
+LOGIN_REDIRECT_URL = '/schedule'
+LOGOUT_REDIRECT_URL = '/login'
+
+SAML_USE_NAME_ID_AS_USERNAME = True
+SAML_DJANGO_USER_MAIN_ATTRIBUTE = 'email'
+SAML_CREATE_UNKNOWN_USER = True

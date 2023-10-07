@@ -26,4 +26,10 @@ def schedule(request):
         response = session.get(schedule_url, headers=headers)
         request.session['schedule'] = response.json()
 
-    return render(request, 'Dashboard/schedule.html', {'schedule': request.session['schedule'], 'days': days})
+    context = {
+        'schedule': request.session['schedule'],
+        'days': days,
+        'page_numbers': range(1, 16),
+    }
+
+    return render(request, 'Dashboard/schedule.html', context)

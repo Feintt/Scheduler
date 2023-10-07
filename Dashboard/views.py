@@ -17,7 +17,7 @@ def schedule(request):
     days = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
 
     if 'schedule' not in request.session:
-        cookies = request.session['cookies']
+        cookies = request.session['api_cookies']
         token = request.session['token']
         session = requests.Session()
         session.cookies = cookiejar_from_dict(cookies)

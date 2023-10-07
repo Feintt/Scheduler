@@ -176,3 +176,6 @@
   border-radius: 8px;
 }
 
+.navbar {
+  margin-bottom: 25px; /* adjust this value as needed */
+}

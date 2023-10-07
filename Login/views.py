@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from .forms import LoginForm
 from .auth_login import authenticate_people_soft
 from django.db import DatabaseError
+import requests
 
 
 def handle_people_soft_authentication(userid, pwd):
@@ -42,10 +43,19 @@ def login_view(request):
             userid = form.cleaned_data['email'].split('@')[0]
             pwd = form.cleaned_data['password']
 
-            if handle_people_soft_authentication(userid, pwd):
+            # Send post-request to http://flow_api:8000/user/login
+            # If the user is authenticated, log them in
+
+            response = requests.post(
+                'http://flow-api:8000/user/login/',
+                data={'username': userid, 'password': pwd}
+            )
+
+            if response.status_code == 200:
                 user = handle_user_creation_or_fetch(userid)
                 if user:
                     login(request, user)
+                    request.session['token'] = response.json()['token']
                     return redirect('schedule')
                 else:
                     message = "There was an issue processing your request. Please try again later."

@@ -2,18 +2,8 @@ from django.contrib.auth import login, logout
 from django.shortcuts import redirect, render
 from django.contrib.auth.models import User
 from .forms import LoginForm
-from .auth_login import authenticate_people_soft
 from django.db import DatabaseError
 import requests
-
-
-def handle_people_soft_authentication(userid, pwd):
-    """Handles authentication against PeopleSoft."""
-    try:
-        return authenticate_people_soft(userid, pwd)
-    except:
-        # You can log the error here for debugging.
-        return False
 
 
 def handle_user_creation_or_fetch(userid):

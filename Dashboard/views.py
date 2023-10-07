@@ -8,6 +8,13 @@ import requests
 
 @login_required
 def schedule(request):
+    """
+    This view will render the schedule of the user, it will get the schedule from the session,
+    if it's not there, it will get it from the API and save it in the session.
+    :param request:
+    :return:
+    """
+    days = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
 
     if 'schedule' not in request.session:
         cookies = request.session['cookies']
@@ -19,4 +26,4 @@ def schedule(request):
         response = session.get(schedule_url, headers=headers)
         request.session['schedule'] = response.json()
 
-    return render(request, 'Dashboard/schedule.html', {'schedule': request.session['schedule']})
+    return render(request, 'Dashboard/schedule.html', {'schedule': request.session['schedule'], 'days': days})

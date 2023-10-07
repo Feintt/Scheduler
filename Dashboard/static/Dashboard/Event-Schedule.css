@@ -179,3 +179,7 @@
 .navbar {
   margin-bottom: 25px; /* adjust this value as needed */
 }
+
+body {
+    padding-bottom: 50px; /* adjust this value as needed */
+}

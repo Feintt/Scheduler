@@ -1,37 +1,34 @@
 $(document).ready(function() {
-    // Cache frequently used selectors
-    var $pages = $(".page");
-    var $backButton = $(".back");
-    var $nextButton = $(".next");
+    const $pages = $(".page");
+    const $backButton = $(".back");
+    const $nextButton = $(".next");
+    const pageSize = 5; // Set the number of visible pages
+    let currentPage = 1; // Initialize the current page
 
-    // Function to handle page navigation
     function navigatePage(targetPage) {
-        var activePage = $pages.filter(".active");
-        var nextPage = $(targetPage);
+        const nextPage = $(targetPage);
 
         if (!nextPage.hasClass("disabled") && !nextPage.hasClass("active")) {
-            activePage.removeClass("active");
+            $pages.removeClass("active");
             nextPage.addClass("active");
+            currentPage = parseInt(nextPage.data("page"));
 
-            // Enable or disable the "forward" and "back" buttons
             updateButtonState();
         }
     }
 
-    // Function to update button state
     function updateButtonState() {
-        var activePage = $pages.filter(".active");
-        var isFirstPage = activePage.prev(".page:not(.disabled)").length === 0;
-        var isLastPage = activePage.next(".page:not(.disabled)").length === 0;
+        const isFirstPage = currentPage === 1;
+        const isLastPage = currentPage === $pages.length;
 
-        // Enable or disable the "back" button
+        $pages.removeClass("disabled");
+
         if (isFirstPage) {
             $backButton.addClass("disabled");
         } else {
             $backButton.removeClass("disabled");
         }
 
-        // Enable or disable the "forward" button
         if (isLastPage) {
             $nextButton.addClass("disabled");
         } else {
@@ -39,30 +36,47 @@ $(document).ready(function() {
         }
     }
 
-    // Click event handler for page links
+    function updateVisiblePages() {
+        $pages.addClass("d-none");
+
+        const startPage = Math.max(currentPage - Math.floor(pageSize / 2), 1);
+        const endPage = Math.min(startPage + pageSize - 1, $pages.length);
+
+        for (let i = startPage; i <= endPage; i++) {
+            $(`.page[data-page="${i}"]`).removeClass("d-none");
+        }
+    }
+
     $pages.on("click", function(e) {
         e.preventDefault();
-        var targetPage = this;
+        const targetPage = this;
         navigatePage(targetPage);
+        updateVisiblePages(); // Update visible pages on click
     });
 
-    // Click event handler for the "back" button
     $backButton.on("click", function(e) {
         e.preventDefault();
-        var activePage = $pages.filter(".active");
-        var prevPage = activePage.prev(".page:not(.disabled)");
-        if (prevPage.length) {
-            navigatePage(prevPage);
+        if (!$(this).hasClass("disabled")) {
+            const prevPage = currentPage - 1;
+            if (prevPage >= 1) {
+                navigatePage(`.page[data-page="${prevPage}"]`);
+                updateVisiblePages();
+            }
         }
     });
 
-    // Click event handler for the "forward" button
     $nextButton.on("click", function(e) {
         e.preventDefault();
-        var activePage = $pages.filter(".active");
-        var nextPage = activePage.next(".page:not(.disabled)");
-        if (nextPage.length) {
-            navigatePage(nextPage);
+        if (!$(this).hasClass("disabled")) {
+            const nextPage = currentPage + 1;
+            if (nextPage <= $pages.length) {
+                navigatePage(`.page[data-page="${nextPage}"]`);
+                updateVisiblePages();
+            }
         }
     });
+
+    // Initially set the first page as active
+    navigatePage(`.page[data-page="1"]`);
+    updateVisiblePages();
 });

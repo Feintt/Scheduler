@@ -155,17 +155,15 @@
     <a href="#" class="back disabled">
         <span class="fa fa-arrow-circle-left"></span> back
     </a>
-    <a href="#" class="page active">1</a>
-    <a href="#" class="page">2</a>
-    <a href="#" class="page">3</a>
-    <a href="#" class="page">4</a>
-    <span class="ellipsis">...</span>
-    <a href="#" class="page">6</a>
+    {% for page_number in page_numbers %}
+        <a href="#" class="page" data-page="{{ page_number }}">{{ page_number }}</a>
+    {% endfor %}
     <a href="#" class="next">
         forward <span class="fa fa-arrow-circle-right"></span>
     </a>
     <i class="far fa-star"></i>
 </div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

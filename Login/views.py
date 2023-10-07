@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from .forms import LoginForm
 from django.db import DatabaseError
 import requests
+from requests.utils import dict_from_cookiejar
 
 
 def handle_user_creation_or_fetch(userid):
@@ -33,19 +34,21 @@ def login_view(request):
             userid = form.cleaned_data['email'].split('@')[0]
             pwd = form.cleaned_data['password']
 
-            # Send post-request to http://flow_api:8000/user/login
-            # If the user is authenticated, log them in
+            session = requests.Session()
 
-            response = requests.post(
-                'http://flow-api:8000/user/login/',
-                data={'username': userid, 'password': pwd}
-            )
+            authentication_url = 'http://flow-api:8000/user/login/'
+            payload = {
+                'username': userid,
+                'password': pwd
+            }
+            response = session.post(authentication_url, data=payload)
 
-            if response.status_code == 200:
+            if response.json()['success'] is True:
                 user = handle_user_creation_or_fetch(userid)
                 if user:
                     login(request, user)
                     request.session['token'] = response.json()['token']
+                    request.session['cookies'] = dict_from_cookiejar(session.cookies)
                     return redirect('schedule')
                 else:
                     message = "There was an issue processing your request. Please try again later."
@@ -65,6 +68,13 @@ def logout_view(request):
     """The Logout page."""
 
     if request.user.is_authenticated:
+        cookie = request.session['cookies']
+        token = request.session['token']
+        logout_url = 'http://flow-api:8000/user/logout/'
+        headers = {
+            'Authorization': 'token ' + token
+        }
+        requests.post(logout_url, headers=headers, cookies=cookie)
         logout(request)
 
     return redirect('login')
